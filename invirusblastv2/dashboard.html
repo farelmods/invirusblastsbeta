@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Dark Engine - Black Clover</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #050505;
+            --card-bg: #111111;
+            --primary: #c62828; /* Blood Red */
+            --accent: #ff1744;
+            --text-main: #ffffff;
+            --text-sec: #aaaaaa;
+            --input-bg: #1a1a1a;
+            --border: #333333;
+            --gradient-card: linear-gradient(135deg, #1a0000 0%, #3e0000 100%);
+            --gradient-btn: linear-gradient(90deg, #b71c1c, #d32f2f);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Rajdhani', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            margin-bottom: 20px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .menu-icon {
+            font-size: 24px;
+            color: var(--text-main);
+        }
+
+        .brand {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 18px;
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border: 2px solid var(--primary);
+        }
+
+        .avatar i {
+            font-size: 18px;
+        }
+
+        /* Profile Card */
+        .profile-card {
+            background: var(--gradient-card);
+            border-radius: 20px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(198, 40, 40, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: url('https://files.catbox.moe/8f5d29.mp4'); /* Fallback or effect */
+            opacity: 0.1;
+            mix-blend-mode: overlay;
+        }
+
+        .profile-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 1;
+        }
+
+        .profile-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #000;
+            border: 2px solid var(--text-main);
+            overflow: hidden;
+        }
+
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-info h3 {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .badge {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            letter-spacing: 1px;
+            margin-top: 4px;
+            display: inline-block;
+        }
+
+        .profile-right {
+            text-align: right;
+            z-index: 1;
+        }
+
+        .expires-label {
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .expires-date {
+            font-size: 12px;
+            font-family: 'Orbitron', sans-serif;
+            margin-top: 2px;
+        }
+
+        /* Banner */
+        .banner {
+            height: 180px;
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            margin-bottom: 25px;
+            border: 1px solid var(--border);
+        }
+
+        .banner video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .banner-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 15px 20px;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+        }
+
+        .banner-text {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 16px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+            letter-spacing: 1px;
+        }
+
+        /* Control Panel */
+        .panel {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 25px;
+            border: 1px solid var(--border);
+            margin-bottom: 20px;
+        }
+
+        .panel-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 16px;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .label {
+            display: block;
+            font-size: 12px;
+            color: var(--text-sec);
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .input-wrapper {
+            position: relative;
+            background: var(--input-bg);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            transition: 0.3s;
+        }
+
+        .input-wrapper:focus-within {
+            border-color: var(--primary);
+            box-shadow: 0 0 10px rgba(198, 40, 40, 0.3);
+        }
+
+        .input-icon {
+            padding: 0 15px;
+            color: var(--text-sec);
+            font-size: 18px;
+        }
+
+        .input-field {
+            width: 100%;
+            background: transparent;
+            border: none;
+            padding: 15px 15px 15px 0;
+            color: var(--text-main);
+            font-size: 14px;
+            outline: none;
+            font-family: 'Roboto Mono', monospace;
+        }
+
+        /* Dropdown custom style */
+        select.input-field {
+            appearance: none;
+            background: transparent;
+            color: var(--text-main);
+            cursor: pointer;
+        }
+
+        .dropdown-arrow {
+            position: absolute;
+            right: 15px;
+            color: var(--primary);
+            pointer-events: none;
+        }
+
+        /* Button */
+        .send-btn {
+            width: 100%;
+            padding: 18px;
+            background: var(--gradient-btn);
+            border: none;
+            border-radius: 15px;
+            color: white;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 16px;
+            letter-spacing: 2px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 5px 20px rgba(198, 40, 40, 0.4);
+            transition: transform 0.2s;
+            margin-bottom: 20px;
+        }
+
+        .send-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* Loading */
+        .loader {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            z-index: 999;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .loader.active {
+            display: flex;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid transparent;
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        .loader-text {
+            margin-top: 15px;
+            color: var(--primary);
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 2px;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #111;
+            border: 1px solid var(--primary);
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 12px;
+            z-index: 1000;
+            display: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-left">
+            <i class="fas fa-bars menu-icon"></i>
+            <div class="brand">Dark Engine</div>
+        </div>
+        <div class="header-right">
+            <i class="fas fa-bell menu-icon" style="font-size: 20px;"></i>
+            <div class="avatar">
+                <i class="fas fa-user"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- Profile Card -->
+    <div class="profile-card">
+        <div class="profile-left">
+            <div class="profile-avatar">
+                <img src="https://dummyimage.com/100x100/000/fff&text=U" alt="User">
+            </div>
+            <div class="profile-info">
+                <h3>${username || 'Unknown'}</h3>
+                <span class="badge">RESELLER</span>
+            </div>
+        </div>
+        <div class="profile-right">
+            <div class="expires-label">EXPIRES</div>
+            <div class="expires-date">${formattedTime}</div>
+        </div>
+    </div>
+
+    <!-- Banner Video -->
+    <div class="banner">
+        <video autoplay muted loop playsinline>
+            <source src="https://files.catbox.moe/8f5d29.mp4" type="video/mp4">
+        </video>
+        <div class="banner-overlay">
+            <div class="banner-text">One Tap, One Dead</div>
+        </div>
+    </div>
+
+    <!-- Control Panel -->
+    <div class="panel">
+        <div class="panel-title">Control Panel</div>
+
+        <form id="attackForm" action="/execution" method="GET">
+            <input type="hidden" name="mode" id="attackMode">
+
+            <div class="form-group">
+                <label class="label">Target Number</label>
+                <div class="input-wrapper">
+                    <div class="input-icon"><i class="fas fa-mobile-alt"></i></div>
+                    <input type="tel" name="target" id="targetNumber" class="input-field" placeholder="e.g. 628xxxxxxxxxx" autocomplete="off">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="label">Select Bug</label>
+                <div class="input-wrapper">
+                    <select id="bugSelect" class="input-field">
+                        <option value="fc">Forclose Andro</option>
+                        <option value="delay">Delay Bug</option>
+                        <option value="invis">Invisible Bug</option>
+                        <option value="blank">Blank Bug</option>
+                    </select>
+                    <div class="dropdown-arrow"><i class="fas fa-chevron-down"></i></div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <button class="send-btn" onclick="executeAttack()">
+        <i class="fas fa-paper-plane"></i> SEND BUG
+    </button>
+
+    <div class="toast" id="toast"></div>
+
+    <!-- Loading Overlay -->
+    <div class="loader" id="loader">
+        <div class="spinner"></div>
+        <div class="loader-text">EXECUTING...</div>
+    </div>
+
+    <!-- Audio -->
+    <audio id="bgAudio" loop>
+        <source src="https://files.catbox.moe/06u2xx.mp4" type="audio/mpeg">
+    </audio>
+
+    <script>
+        // Audio
+        const audio = document.getElementById('bgAudio');
+        audio.volume = 0.2;
+        document.body.addEventListener('click', () => {
+            if(audio.paused) audio.play();
+        }, { once: true });
+
+        // Toast
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.innerText = msg;
+            t.style.display = 'block';
+            setTimeout(() => t.style.display = 'none', 3000);
+        }
+
+        // Execute
+        function executeAttack() {
+            const target = document.getElementById('targetNumber').value;
+            const mode = document.getElementById('bugSelect').value;
+            const modeInput = document.getElementById('attackMode');
+
+            if (!target) {
+                showToast("Please enter target number!");
+                return;
+            }
+
+            if (!mode) {
+                showToast("Please select a bug type!");
+                return;
+            }
+
+            modeInput.value = mode;
+
+            document.getElementById('loader').classList.add('active');
+
+            // Submit form
+            document.getElementById('attackForm').submit();
+        }
+
+        // Handle URL Params for Toast
+        const urlParams = new URLSearchParams(window.location.search);
+        // Note: The backend logic for 'status' or 'message' might need adjustment if it doesn't pass params
+        // But currently index.js renders the template with replacements.
+        // If there's a {{message}} replacement it will show up in the body if we placed it there.
+        // The previous design had a "Server Msg" box. Let's add a small check if the server injected a message.
+        // Since we replaced the file, we need to make sure the backend replacements still work.
+        // The backend replaces ${username}, ${formattedTime}.
+        // It also replaces {{message}} and {{status}}.
+
+    </script>
+
+    <!-- Server Message Injection Hidden -->
+    <div style="display:none;" id="serverMsg">{{message}}</div>
+    <script>
+        const msg = document.getElementById('serverMsg').innerText;
+        if(msg && msg !== '{{message}}' && msg.trim() !== '') {
+            showToast(msg);
+        }
+    </script>
+</body>
+</html>

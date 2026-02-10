@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Login - Dark Engine</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #c62828;
+            --text-main: #ffffff;
+            --input-bg: rgba(0, 0, 0, 0.6);
+            --border: #333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Rajdhani', sans-serif;
+        }
+
+        body {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: #000;
+        }
+
+        /* Background Video */
+        .video-bg {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+            z-index: -1;
+            filter: brightness(0.4);
+        }
+
+        /* Login Card */
+        .login-card {
+            width: 90%;
+            max-width: 400px;
+            background: rgba(10, 10, 10, 0.75);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(198, 40, 40, 0.3);
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
+            position: relative;
+        }
+
+        .login-card::before {
+            content: '';
+            position: absolute;
+            top: -2px; left: -2px; right: -2px; bottom: -2px;
+            border-radius: 22px;
+            background: linear-gradient(45deg, var(--primary), transparent, var(--primary));
+            z-index: -1;
+            animation: border-glow 3s linear infinite;
+        }
+
+        @keyframes border-glow {
+            0% { opacity: 0.5; }
+            50% { opacity: 1; }
+            100% { opacity: 0.5; }
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px var(--primary);
+            letter-spacing: 2px;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: #aaa;
+            margin-bottom: 30px;
+            letter-spacing: 1px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .input-field {
+            width: 100%;
+            background: var(--input-bg);
+            border: 1px solid var(--border);
+            padding: 15px 15px 15px 45px;
+            color: var(--text-main);
+            border-radius: 10px;
+            font-size: 16px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .input-field:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 10px rgba(198, 40, 40, 0.3);
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 15px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 700;
+            font-family: 'Orbitron', sans-serif;
+            cursor: pointer;
+            transition: 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 10px;
+        }
+
+        .login-btn:hover {
+            background: #b71c1c;
+            box-shadow: 0 0 20px rgba(198, 40, 40, 0.6);
+        }
+
+        .footer {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .footer a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.9);
+            border: 1px solid var(--primary);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            z-index: 1000;
+            display: none;
+        }
+
+    </style>
+</head>
+<body>
+
+    <video class="video-bg" autoplay muted loop playsinline>
+        <source src="https://files.catbox.moe/8f5d29.mp4" type="video/mp4">
+    </video>
+
+    <div class="login-card">
+        <div class="logo">DARK ENGINE</div>
+        <p class="subtitle">AUTHENTICATION REQUIRED</p>
+
+        <form action="/auth" method="POST">
+            <div class="input-group">
+                <i class="fas fa-user input-icon"></i>
+                <input type="text" name="username" class="input-field" placeholder="Username" required autocomplete="off">
+            </div>
+
+            <div class="input-group">
+                <i class="fas fa-key input-icon"></i>
+                <input type="password" name="key" class="input-field" placeholder="Access Key" required>
+            </div>
+
+            <button type="submit" class="login-btn">
+                Access System
+            </button>
+        </form>
+
+        <div class="footer">
+            No access? <a href="https://wa.me/6285845663184">Contact Admin</a>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <audio id="bgAudio" loop>
+        <source src="https://files.catbox.moe/06u2xx.mp4" type="audio/mpeg">
+    </audio>
+
+    <script>
+        const audio = document.getElementById('bgAudio');
+        audio.volume = 0.2;
+        document.body.addEventListener('click', () => {
+            if(audio.paused) audio.play();
+        }, { once: true });
+
+        // Parse URL query for error msg
+        const params = new URLSearchParams(window.location.search);
+        if(params.has('msg')) {
+            const toast = document.getElementById('toast');
+            toast.innerText = params.get('msg');
+            toast.style.display = 'block';
+            setTimeout(() => toast.style.display = 'none', 4000);
+        }
+    </script>
+
+</body>
+</html>
